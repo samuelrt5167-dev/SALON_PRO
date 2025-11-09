@@ -1,46 +1,72 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Scissors, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Scissors, Mail, Lock, Eye, EyeOff, Sparkles } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    
     // TODO: Integrate with backend authentication
-    console.log("Login attempt:", { email, password });
+    // Simulating API call
+    setTimeout(() => {
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully logged in.",
+      });
+      navigate("/dashboard");
+      setIsLoading(false);
+    }, 1500);
   };
 
   const handleGoogleLogin = () => {
     // TODO: Integrate with Google OAuth
-    console.log("Google login");
+    toast({
+      title: "Google Sign-In",
+      description: "Google authentication will be integrated with backend.",
+    });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-hero p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex w-16 h-16 rounded-2xl bg-white shadow-glow items-center justify-center mb-4">
-            <Scissors className="w-8 h-8 text-primary" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-hero p-4 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
+        <div className="text-center mb-8 animate-in fade-in slide-in-from-top duration-700">
+          <div className="inline-flex w-20 h-20 rounded-3xl bg-white shadow-glow items-center justify-center mb-4 relative">
+            <Scissors className="w-10 h-10 text-primary" />
+            <Sparkles className="w-4 h-4 text-gold absolute -top-1 -right-1 animate-pulse" />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-2">SalonPro</h1>
-          <p className="text-white/90">Professional Salon Management</p>
+          <h1 className="text-5xl font-bold text-white mb-3 tracking-tight">SalonPro</h1>
+          <p className="text-white/90 text-lg">Professional Salon Management</p>
         </div>
 
-        <Card className="border-none shadow-xl">
+        <Card className="border-none shadow-2xl backdrop-blur-sm bg-white/95 animate-in fade-in slide-in-from-bottom duration-700">
           <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
-            <CardDescription>Sign in to manage your salon</CardDescription>
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Welcome Back
+            </CardTitle>
+            <CardDescription className="text-base">Sign in to manage your salon</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
@@ -85,8 +111,12 @@ const Login = () => {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full bg-gradient-primary hover:opacity-90 transition-base">
-                Sign In
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-primary hover:opacity-90 transition-base text-lg h-12 font-semibold shadow-lg hover:shadow-xl"
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing In..." : "Sign In"}
               </Button>
             </form>
 
@@ -101,7 +131,7 @@ const Login = () => {
               variant="outline"
               type="button"
               onClick={handleGoogleLogin}
-              className="w-full"
+              className="w-full h-12 text-base font-medium hover:bg-muted/50 transition-smooth"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path
@@ -124,18 +154,26 @@ const Login = () => {
               Sign in with Google
             </Button>
 
-            <p className="text-center text-sm text-muted-foreground mt-6">
-              Don't have an account?{" "}
-              <Link to="/register" className="text-primary font-medium hover:underline">
-                Sign up
-              </Link>
-            </p>
+            <div className="text-center mt-6">
+              <p className="text-sm text-muted-foreground">
+                Don't have an account?{" "}
+                <Link to="/register" className="text-primary font-semibold hover:underline transition-colors">
+                  Sign up for free
+                </Link>
+              </p>
+            </div>
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-white/70 mt-6">
-          By continuing, you agree to our Terms of Service and Privacy Policy
-        </p>
+        <div className="text-center mt-6 space-y-2">
+          <p className="text-xs text-white/70">
+            By continuing, you agree to our Terms of Service and Privacy Policy
+          </p>
+          <div className="flex items-center justify-center gap-2 text-white/80 text-sm">
+            <Sparkles className="w-4 h-4" />
+            <span>Trusted by 1000+ salons worldwide</span>
+          </div>
+        </div>
       </div>
     </div>
   );
