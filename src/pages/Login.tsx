@@ -22,15 +22,20 @@ const Login = () => {
     
     // TODO: Integrate with backend authentication
     // Simulating API call with role-based routing
+    console.log("Login attempt with email:", email);
+    
     setTimeout(() => {
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully logged in.",
-      });
-      
       // Mock role detection - in production this will come from backend
       // For demo: emails ending with @client.com go to client dashboard
-      const isClient = email.includes("@client.com");
+      const isClient = email.toLowerCase().includes("@client.com");
+      
+      console.log("Is client?", isClient);
+      console.log("Redirecting to:", isClient ? "/client-dashboard" : "/dashboard");
+      
+      toast({
+        title: "Welcome back!",
+        description: `You have successfully logged in as ${isClient ? "a client" : "salon owner"}.`,
+      });
       
       if (isClient) {
         navigate("/client-dashboard");
@@ -163,13 +168,21 @@ const Login = () => {
               Sign in with Google
             </Button>
 
-            <div className="text-center mt-6">
+            <div className="text-center mt-6 space-y-3">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
                 <Link to="/register" className="text-primary font-semibold hover:underline transition-colors">
                   Sign up for free
                 </Link>
               </p>
+              
+              <div className="p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                <p className="text-xs text-muted-foreground">
+                  <span className="font-semibold text-primary">💡 Demo Tip:</span> Use email with{" "}
+                  <code className="px-1.5 py-0.5 bg-primary/10 rounded text-xs font-mono">@client.com</code>{" "}
+                  to access client dashboard, or any other email for salon owner dashboard
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
