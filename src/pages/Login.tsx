@@ -21,13 +21,22 @@ const Login = () => {
     setIsLoading(true);
     
     // TODO: Integrate with backend authentication
-    // Simulating API call
+    // Simulating API call with role-based routing
     setTimeout(() => {
       toast({
         title: "Welcome back!",
         description: "You have successfully logged in.",
       });
-      navigate("/dashboard");
+      
+      // Mock role detection - in production this will come from backend
+      // For demo: emails ending with @client.com go to client dashboard
+      const isClient = email.includes("@client.com");
+      
+      if (isClient) {
+        navigate("/client-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
       setIsLoading(false);
     }, 1500);
   };

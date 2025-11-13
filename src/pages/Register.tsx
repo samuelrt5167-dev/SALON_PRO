@@ -40,7 +40,8 @@ const Register = () => {
         title: "Account created successfully!",
         description: "Welcome to SalonPro. Start booking appointments now.",
       });
-      navigate("/dashboard");
+      // Clients go to client dashboard
+      navigate("/client-dashboard");
       setIsLoading(false);
     }, 1500);
   };

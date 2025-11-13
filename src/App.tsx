@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ClientDashboard from "./pages/ClientDashboard";
 import Appointments from "./pages/Appointments";
 import Services from "./pages/Services";
 import Staff from "./pages/Staff";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/client-dashboard" element={<ClientDashboard />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/services" element={<Services />} />
           <Route path="/staff" element={<Staff />} />
